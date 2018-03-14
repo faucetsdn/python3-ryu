@@ -1,0 +1,36 @@
+image: registry.gitlab.com/joydenfew/python-ryu
+
+stages:  
+  - build
+  - deploy
+
+run-build:  
+  stage: build
+  script:
+    - apt-get update && apt-get upgrade -y
+    - cd /builds/joydenfew/python-ryu
+    - echo "Installing packages required for package building"
+    - apt-get upgrade -y && mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
+    - export DEBEMAIL='jfh13@students.waikato.ac.nz' && export DEBFULLNAME='Jayden Hewer'
+    - fakeroot debian/rules binary
+    - mkdir build-deb
+    - mv ../*.deb build-deb/
+  artifacts:
+    paths:
+      - build-deb/*
+
+deploy-package:
+  stage: deploy
+  script:
+    - cd /builds/joydenfew/python-ryu/build-deb
+    #token is the cloud token set as a secret
+    - echo "{\"url\":\"https://packagecloud.io\",\"token\":\"$TOKEN\"}" > ~/.packagecloud
+    - package_cloud push Student/faucet/debian/jessie *.deb
+    - package_cloud push Student/faucet/debian/stretch *.deb
+    - package_cloud push Student/faucet/debian/buster *.deb
+    - package_cloud push Student/faucet/ubuntu/xenial *.deb
+    - package_cloud push Student/faucet/ubuntu/yakkety *.deb
+    - package_cloud push Student/faucet/ubuntu/zesty *.deb
+    - package_cloud push Student/faucet/ubuntu/artful *.deb
+    - package_cloud push Student/faucet/ubuntu/bionic *.deb
+
