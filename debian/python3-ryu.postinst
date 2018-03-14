@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ] ; then
+	update-alternatives --install /usr/bin/ryu ryu /usr/bin/python3-ryu 400
+	update-alternatives --install /usr/bin/ryu-manager ryu-manager /usr/bin/python3-ryu-manager 400
+fi
+
+#DEBHELPER#
+
+exit 0

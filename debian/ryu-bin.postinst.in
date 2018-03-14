@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+#PKGOS-INCLUDE#
+
+if [ "$1" = "configure" ] || [ "$1" = "reconfigure" ]; then
+	pkgos_var_user_group ryu
+fi
+
+#DEBHELPER#
+
+exit 0

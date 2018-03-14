@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "remove" ] || [ "$1" = "disappear" ] ; then
+	update-alternatives --remove ryu /usr/bin/python2-ryu
+	update-alternatives --remove ryu-manager /usr/bin/python2-ryu-manager
+fi
+
+#DEBHELPER#
+
+exit 0

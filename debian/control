@@ -1,0 +1,168 @@
+Source: ryu
+Section: net
+Priority: optional
+Maintainer: Debian OpenStack <openstack-devel@lists.alioth.debian.org>
+Uploaders:
+ Thomas Goirand <zigo@debian.org>,
+ Dariusz Dwornikowski <dariusz.dwornikowski@cs.put.poznan.pl>,
+Build-Depends:
+ debhelper (>= 10),
+ dh-python,
+ openstack-pkg-tools,
+ python-all,
+ python-pbr,
+ python-setuptools,
+ python-sphinx <!nodoc>,
+ python-sphinx-rtd-theme <!nodoc>,
+ python3-all,
+ python3-pbr,
+ python3-setuptools,
+ sphinx-common,
+Build-Depends-Indep:
+ python-eventlet <!nodoc>,
+ python-eventlet <!nocheck>,
+ python-formencode <!nodoc>,
+ python-formencode <!nocheck>,
+ python-lxml <!nocheck>,
+ python-mock <!nocheck>,
+ python-msgpack <!nocheck>,
+ python-netaddr <!nodoc>,
+ python-netaddr <!nocheck>,
+ python-nose <!nocheck>,
+ python-openvswitch <!nocheck>,
+ python-oslo.config <!nodoc>,
+ python-oslo.config <!nocheck>,
+ python-paramiko <!nocheck>,
+ python-pip <!nodoc>,
+ python-pip <!nocheck>,
+ python-routes <!nodoc>,
+ python-routes <!nocheck>,
+ python-six,
+ python-tinyrpc <!nodoc>,
+ python-tinyrpc <!nocheck>,
+ python-webob <!nocheck>,
+ python3-eventlet <!nocheck>,
+ python3-formencode <!nocheck>,
+ python3-lxml <!nocheck>,
+ python3-mock <!nocheck>,
+ python3-msgpack <!nocheck>,
+ python3-netaddr <!nocheck>,
+ python3-nose <!nocheck>,
+ python3-openvswitch <!nocheck>,
+ python3-oslo.config <!nocheck>,
+ python3-paramiko <!nocheck>,
+ python3-pip <!nocheck>,
+ python3-routes <!nocheck>,
+ python3-six <!nocheck>,
+ python3-tinyrpc <!nocheck>,
+ python3-webob <!nocheck>,
+Standards-Version: 4.1.1
+Vcs-Browser: https://anonscm.debian.org/cgit/openstack/third-party/ryu.git
+Vcs-Git: https://anonscm.debian.org/git/openstack/third-party/ryu.git
+Homepage: http://osrg.github.io/ryu/
+X-Python-Version: >= 2.7
+X-Python3-Version: >= 3.4
+
+Package: python-ryu
+Architecture: all
+Section: python
+Depends:
+ python-eventlet,
+ python-lxml,
+ python-msgpack,
+ python-netaddr,
+ python-openvswitch,
+ python-oslo.config,
+ python-paramiko,
+ python-routes,
+ python-six,
+ python-webob,
+ ${misc:Depends},
+ ${python:Depends},
+Suggests:
+ python-ryu-doc,
+Provides:
+ ${python:Provides},
+Breaks:
+ ryu-bin (<< 3.30+dfsg1-4~),
+Replaces:
+ ryu-bin (<< 3.30+dfsg1-4~),
+Description: software defined networking framework - Python 2.7
+ Ryu is a component-based software defined networking framework.
+ Ryu provides software components with well defined API that make
+ it easy for developers to create new network management and control
+ applications. Ryu supports various protocols for managing network
+ devices, such as OpenFlow, Netconf, OF-config, etc. About OpenFlow,
+ Ryu supports fully 1.0, 1.2, 1.3, 1.4 and Nicira Extensions.
+ .
+ This package provides the Python 2.7 module.
+
+Package: python-ryu-doc
+Architecture: all
+Section: doc
+Build-Profiles: <!nodoc>
+Depends:
+ ${misc:Depends},
+ ${sphinxdoc:Depends},
+Description: software defined networking framework (ryu docs)
+ Ryu is a component-based software defined networking framework.
+ Ryu provides software components with well defined API that make
+ it easy for developers to create new network management and control
+ applications. Ryu supports various protocols for managing network
+ devices, such as OpenFlow, Netconf, OF-config, etc. About OpenFlow,
+ Ryu supports fully 1.0, 1.2, 1.3, 1.4 and Nicira Extensions.
+ .
+ This package provides the HTML documentation including the Ryu API
+ manual.
+
+Package: python3-ryu
+Architecture: all
+Section: python
+Depends:
+ python3-eventlet,
+ python3-lxml,
+ python3-msgpack,
+ python3-netaddr,
+ python3-openvswitch,
+ python3-oslo.config,
+ python3-paramiko,
+ python3-routes,
+ python3-six,
+ python3-webob,
+ python3-tinyrpc,
+ ${misc:Depends},
+ ${python:Depends},
+Suggests:
+ python-ryu-doc,
+Provides:
+ ${python3:Provides},
+Breaks:
+ ryu-bin (<< 3.30+dfsg1-4~),
+Replaces:
+ ryu-bin (<< 3.30+dfsg1-4~),
+Description: software defined networking framework - Python 3
+ Ryu is a component-based software defined networking framework.
+ Ryu provides software components with well defined API that make
+ it easy for developers to create new network management and control
+ applications. Ryu supports various protocols for managing network
+ devices, such as OpenFlow, Netconf, OF-config, etc. About OpenFlow,
+ Ryu supports fully 1.0, 1.2, 1.3, 1.4 and Nicira Extensions.
+ .
+ This package provides the Python 3 module.
+
+Package: ryu-bin
+Architecture: all
+Depends:
+ adduser,
+ python3-ryu (= ${binary:Version}) | python-ryu (= ${binary:Version}),
+ ${misc:Depends},
+ ${ostack-lsb-base},
+Description: software defined networking framework - ryu binary
+ Ryu is a component-based software defined networking framework.
+ Ryu provides software components with well defined API that make
+ it easy for developers to create new network management and control
+ applications. Ryu supports various protocols for managing network
+ devices, such as OpenFlow, Netconf, OF-config, etc. About OpenFlow,
+ Ryu supports fully 1.0, 1.2, 1.3, 1.4 and Nicira Extensions.
+ .
+ This package provides the Ryu manager.
