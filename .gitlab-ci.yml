@@ -1,0 +1,32 @@
+ytages:
+  - build
+  - deploy
+
+run-build:
+  stage: build
+  image: registry.gitlab.com/faucetsdn/dbuilder
+  script:
+    - apt-get update && apt-get upgrade -y
+    - cd /builds/faucetsdn/python3-ryu
+    - apt-get upgrade -y && mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
+    - export DEBEMAIL='maintainers@faucet.nz' && export DEBFULLNAME='Faucet Maintainers'
+    - fakeroot debian/rules binary
+    - mkdir build
+    - mv ../*.deb build/
+  artifacts:
+    paths:
+      - build/*
+
+deploy-package:
+  stage: deploy
+  script:
+    - cd /builds/faucetsdn/python3-ryu/build
+    - echo "{\"url\":\"https://packagecloud.io\",\"token\":\"$PACKAGECLOUD_TOKEN\"}" > ~/.packagecloud
+    - package_cloud push faucetsdn/faucet/debian/jessie *.deb
+    - package_cloud push faucetsdn/faucet/debian/stretch *.deb
+    - package_cloud push faucetsdn/faucet/debian/buster *.deb
+    - package_cloud push faucetsdn/faucet/ubuntu/xenial *.deb
+    - package_cloud push faucetsdn/faucet/ubuntu/yakkety *.deb
+    - package_cloud push faucetsdn/faucet/ubuntu/zesty *.deb
+    - package_cloud push faucetsdn/faucet/ubuntu/artful *.deb
+    - package_cloud push faucetsdn/faucet/ubuntu/bionic *.deb
