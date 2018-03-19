@@ -19,6 +19,7 @@ run-build:
 
 deploy-package:
   stage: deploy
+  image: registry.gitlab.com/faucetsdn/dbuilder
   script:
     - cd /builds/faucetsdn/python3-ryu/build
     - echo "{\"url\":\"https://packagecloud.io\",\"token\":\"$PACKAGECLOUD_TOKEN\"}" > ~/.packagecloud
