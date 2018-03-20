@@ -6,9 +6,9 @@ run-build:
   stage: build
   image: registry.gitlab.com/faucetsdn/faucet/dbuilder
   script:
-    - apt-get update && apt-get upgrade -y
     - cd /builds/faucetsdn/python3-ryu
-    - apt-get upgrade -y && mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
+    - apt-get update
+    - mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
     - export DEBEMAIL='maintainers@faucet.nz' && export DEBFULLNAME='Faucet Maintainers'
     - fakeroot debian/rules binary
     - mkdir built-packages || true
