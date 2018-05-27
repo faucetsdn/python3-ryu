@@ -4,7 +4,7 @@ stages:
 
 run-build:
   stage: build
-  image: registry.gitlab.com/faucetsdn/faucet/dbuilder
+  image: faucet/dbuilder
   script:
     - cd /builds/faucetsdn/python3-ryu
     - apt-get update
@@ -20,7 +20,7 @@ run-build:
 
 deploy-package:
   stage: deploy
-  image: registry.gitlab.com/faucetsdn/faucet/dbuilder
+  image: faucet/dbuilder
   script:
     - cd /builds/faucetsdn/python3-ryu/built-packages/
     - echo "{\"url\":\"https://packagecloud.io\",\"token\":\"$PACKAGECLOUD_TOKEN\"}" > ~/.packagecloud
