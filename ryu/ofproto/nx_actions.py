@@ -2766,6 +2766,43 @@ def generate(ofp_name, ofpp_name):
                 a.serialize(data, len(data))
             return data
 
+    class NXActionCTClear(NXAction):
+        """
+        Clear connection tracking state action
+
+        This action clears connection tracking state from packets.
+
+        And equivalent to the followings action of ovs-ofctl command.
+
+        ..
+          ct_clear
+        ..
+
+        +--------------+
+        | **ct_clear** |
+        +--------------+
+
+        Example::
+
+            actions += [parser.NXActionCTClear()]
+        """
+        _subtype = nicira_ext.NXAST_CT_CLEAR
+
+        _fmt_str = '!6x'
+
+        def __init__(self,
+                     type_=None, len_=None, experimenter=None, subtype=None):
+            super(NXActionCTClear, self).__init__()
+
+        @classmethod
+        def parser(cls, buf):
+            return cls()
+
+        def serialize_body(self):
+            data = bytearray()
+            msg_pack_into(self._fmt_str, data, 0)
+            return data
+
     class NXActionNAT(NXAction):
         """
         Network address translation action
@@ -2984,6 +3021,41 @@ def generate(ofp_name, ofpp_name):
                           self.max_len)
             return data
 
+    class NXActionDecNshTtl(NXAction):
+        """
+        Decrement NSH TTL action
+
+        This action decrements the TTL in the Network Service Header(NSH).
+
+        This action was added in OVS v2.9.
+
+        And equivalent to the followings action of ovs-ofctl command.
+
+        ::
+
+            dec_nsh_ttl
+
+        Example::
+
+            actions += [parser.NXActionDecNshTtl()]
+        """
+        _subtype = nicira_ext.NXAST_DEC_NSH_TTL
+
+        _fmt_str = '!6x'
+
+        def __init__(self,
+                     type_=None, len_=None, vendor=None, subtype=None):
+            super(NXActionDecNshTtl, self).__init__()
+
+        @classmethod
+        def parser(cls, buf):
+            return cls()
+
+        def serialize_body(self):
+            data = bytearray()
+            msg_pack_into(self._fmt_str, data, 0)
+            return data
+
     def add_attr(k, v):
         v.__module__ = ofpp.__name__  # Necessary for stringify stuff
         setattr(ofpp, k, v)
@@ -3026,12 +3098,14 @@ def generate(ofp_name, ofpp_name):
         'NXActionBundle',
         'NXActionBundleLoad',
         'NXActionCT',
+        'NXActionCTClear',
         'NXActionNAT',
         'NXActionOutputTrunc',
         '_NXFlowSpec',  # exported for testing
         'NXFlowSpecMatch',
         'NXFlowSpecLoad',
         'NXFlowSpecOutput',
+        'NXActionDecNshTtl',
     ]
     vars = locals()
     for name in classes:
