@@ -6,11 +6,10 @@ run-build:
   stage: build
   image: faucet/dbuilder
   script:
-    - cd /builds/faucetsdn/python3-ryu
-    - apt-get update
+    - apt-get update && apt-get upgrade -y
     - mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
     - export DEBEMAIL='maintainers@faucet.nz' && export DEBFULLNAME='Faucet Maintainers'
-    - fakeroot debian/rules binary
+    - dpkg-buildpackage -b -us -uc -rfakeroot
     - mkdir built-packages || true
     - mv ../*.deb built-packages/
   artifacts:
@@ -22,16 +21,16 @@ deploy-package:
   stage: deploy
   image: faucet/dbuilder
   script:
-    - cd /builds/faucetsdn/python3-ryu/built-packages/
+    - cd built-packages/
     - echo "{\"url\":\"https://packagecloud.io\",\"token\":\"$PACKAGECLOUD_TOKEN\"}" > ~/.packagecloud
-    - package_cloud push faucetsdn/faucet/debian/jessie *.deb || true
-    - package_cloud push faucetsdn/faucet/debian/stretch *.deb || true
-    - package_cloud push faucetsdn/faucet/debian/buster *.deb || true
-    - package_cloud push faucetsdn/faucet/raspbian/jessie *.deb || true
-    - package_cloud push faucetsdn/faucet/raspbian/stretch *.deb || true
-    - package_cloud push faucetsdn/faucet/raspbian/buster *.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/xenial *.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/yakkety *.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/zesty *.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/artful *.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/bionic *.deb || true
+    - package_cloud push faucetsdn/faucet-test/debian/jessie *.deb || true
+    - package_cloud push faucetsdn/faucet-test/debian/stretch *.deb || true
+    - package_cloud push faucetsdn/faucet-test/debian/buster *.deb || true
+    - package_cloud push faucetsdn/faucet-test/raspbian/jessie *.deb || true
+    - package_cloud push faucetsdn/faucet-test/raspbian/stretch *.deb || true
+    - package_cloud push faucetsdn/faucet-test/raspbian/buster *.deb || true
+    - package_cloud push faucetsdn/faucet-test/ubuntu/xenial *.deb || true
+    - package_cloud push faucetsdn/faucet-test/ubuntu/yakkety *.deb || true
+    - package_cloud push faucetsdn/faucet-test/ubuntu/zesty *.deb || true
+    - package_cloud push faucetsdn/faucet-test/ubuntu/artful *.deb || true
+    - package_cloud push faucetsdn/faucet-test/ubuntu/bionic *.deb || true
