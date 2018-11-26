@@ -1,3 +1,9 @@
+ryu (4.30-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Brad Cowie <brad@faucet.nz>  Mon, 26 Nov 2018 16:17:12 +1300
+
 ryu (4.29-1) unstable; urgency=medium
 
   * New upstream release.
