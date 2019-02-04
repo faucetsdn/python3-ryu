@@ -7,17 +7,14 @@ LAST_CHANGE=$(shell dpkg-parsechangelog -S Date)
 BUILD_DATE=$(shell LC_ALL=C date -u "+%B %d, %Y" -d "$(LAST_CHANGE)")
 
 %:
-	dh $@ --buildsystem=python_distutils --with python2,python3,sphinxdoc,systemd
+	dh $@ --buildsystem=python_distutils --with python3,sphinxdoc,systemd
 
 override_dh_auto_build:
-	dh_auto_build
 	/usr/share/openstack-pkg-tools/pkgos_insert_include pkgos_func ryu-bin.postinst
-	/bin/pip install --global-option=build --global-option='--executable=/opt/local/bin/python3 -d' .
 
 override_dh_auto_test:
 ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
-	rm ryu/tests/unit/test_requirements.py
-	for i in $(PYTHONS) $(PYTHON3S) ; do \
+	for i in $(PYTHON3S) ; do \
 		http_proxy=127.0.0.1:9 https_proxy=127.0.0.1:9 PYTHONPATH=. python$$i ryu/tests/run_tests.py ; \
 	done
 endif
@@ -32,14 +29,13 @@ endif
 
 override_dh_sphinxdoc:
 ifeq (,$(findstring nodoc, $(DEB_BUILD_OPTIONS)))
-	PYTHONPATH=. sphinx-build -b html doc/source debian/python-ryu-doc/usr/share/doc/python-ryu-doc/html
+	PYTHONPATH=. PYTHON=python3 python3 -m sphinx -b html doc/source debian/python-ryu-doc/usr/share/doc/python-ryu-doc/html
 	dh_sphinxdoc
 endif
 
 override_dh_auto_install:
-	pkgos-dh_auto_install
+	pkgos-dh_auto_install --no-py2
 	rm -rf $(CURDIR)/debian/python3-ryu/usr/etc $(CURDIR)/debian/python-ryu/usr/etc
-	sed -i '1c#!/usr/bin/python3' debian/python3-ryu/usr/bin/python3-ryu-manager 
 
 override_dh_installinit:
 	dh_installinit --no-start --name=ryu
@@ -53,14 +49,6 @@ override_dh_clean:
 
 override_dh_auto_clean:
 	rm -rf debian/ryu-manager.8 debian/ryu.8 debian/ryu-bin.postinst
-	http_proxy=127.0.0.1:9 https_proxy=127.0.0.1:9 dh_auto_clean
 
-# Commands not to run
-override_dh_installcatalogs:
-override_dh_installemacsen override_dh_installifupdown:
-override_dh_installinfo override_dh_installmenu override_dh_installmime:
-override_dh_installmodules override_dh_installlogcheck:
-override_dh_installpam override_dh_installppp override_dh_installudev override_dh_installwm:
-override_dh_installxfonts override_dh_gconf override_dh_icons override_dh_perl override_dh_usrlocal:
-override_dh_installcron override_dh_installdebconf:
-override_dh_installgsettings:
+override_dh_python3:
+	dh_python3 --shebang=/usr/bin/python3
